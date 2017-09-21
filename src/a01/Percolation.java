@@ -129,10 +129,6 @@ public class Percolation {
 		return grid[row][col] == true;
 	}
 
-	public String numberOfOpenSites() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	 * percolates will tell you if the top connects to the bottom so it can
@@ -143,14 +139,7 @@ public class Percolation {
 	public boolean percolates() {
 		return uF.connected(topVirtualSite, bottomVirtualSite);
 	}
-	
 
-	private void inputValidation(int i, int j) {
-		if (i < 0 || i >= n || j < 0 || j >= n)
-			throw new IndexOutOfBoundsException("row index " + i + " must be between 0 and " + (n - 1));
-	}
-	
-	
 	
 	// PRIVATE HELPER METHODS
 	
@@ -232,6 +221,11 @@ public class Percolation {
 
 	}
 
+	
+	// REMOVE BEFORE SUBMISSION: USED BY THE VISUALIZER FOR TESTING 
+	public String numberOfOpenSites() {
+		return numOfOpenSpaces + "";
+	}
 
 }
 
