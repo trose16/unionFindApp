@@ -41,8 +41,66 @@ public class Percolation {
 	}
 	
 	public void open(int row, int col) {
-		inputValidation(row , col);
-		grid[row][col] = true;		
+		inputValidation(row, col);
+		if (!isOpen(row, col) == true) {
+			numOfOpenSpaces++;
+		}
+		grid[row][col] = true;
+	
+		// GRID EDGE CASES
+		// Upper left corner (row 0/col 0) ! to check above or left slots
+		if (row == 0 && col == 0) {
+			checkSlotRight(row, col);
+			checkSlotBelow(row, col);
+		}
+		// Bottom left corner (row n/col 0) ! to check left or below slots
+		else if (row == n - 1 && col == 0) {
+			checkSlotRight(row, col);
+			checkSlotAbove(row, col);
+		}
+
+		// Top right corner (row 0/col n) ! to check right or top slots
+		else if (row == 0 && col == n - 1) {
+			checkSlotLeft(row, col);
+			checkSlotBelow(row, col);
+		}
+		// Bottom right corner (row n/col n) ! to check right or bottom slots
+		else if (row == n - 1 && col == n - 1) {
+			checkSlotLeft(row, col);
+			checkSlotAbove(row, col);
+		}
+		
+		// Left border (col 0) ! left slots
+		else if (col == 0) {
+			checkSlotAbove(row, col);
+			checkSlotRight(row, col);
+			checkSlotBelow(row, col);
+		}
+		// Right border (col n) ! right slots
+		else if (col == n - 1) {
+			checkSlotAbove(row, col);
+			checkSlotLeft(row, col);
+			checkSlotBelow(row, col);
+		}
+		// Top border (row 0) ! above slots
+		else if (row == 0) {
+			checkSlotLeft(row, col);
+			checkSlotRight(row, col);
+			checkSlotBelow(row, col);
+		}
+		// Bottom border (row n) ! below slots
+		else if (row == n - 1) {
+			checkSlotAbove(row, col);
+			checkSlotRight(row, col);
+			checkSlotLeft(row, col);
+		}
+		// If ! a corner/border edge of the grid check all surrounding spaces.
+		else {
+			checkSlotAbove(row, col);
+			checkSlotBelow(row, col);
+			checkSlotRight(row, col);
+			checkSlotLeft(row, col);
+		}
 	}
 	
 	/**
@@ -86,8 +144,20 @@ public class Percolation {
 		return uF.connected(topVirtualSite, bottomVirtualSite);
 	}
 	
+
+	private void inputValidation(int i, int j) {
+		if (i < 0 || i >= n || j < 0 || j >= n)
+			throw new IndexOutOfBoundsException("row index " + i + " must be between 0 and " + (n - 1));
+	}
+	
+	
+	
+	// PRIVATE HELPER METHODS
+	
 	/**
-	 * takes a row and col and turning it into a single number
+	 * converts2DTo1D() takes a row and col from percolation grid (2D Array) 
+	 * and converts it into the corresponding single index reference used by 
+	 * WeightedQuickUnionUF, which unions grid data in a single 1D array.
 	 * 
 	 * @param row
 	 * @param col
@@ -96,11 +166,54 @@ public class Percolation {
 	private int converts2dTo1d(int row, int col) {
 		return row * n + col;
 	}
-
+	
+	/**
+	 * Each percolation method should throw an exception for invalid indices, 
+	 * inputValidation() method performs our validation process.
+	 * 
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	private void inputValidation(int i, int j) {
 		if (i < 0 || i >= n || j < 0 || j >= n)
 			throw new IndexOutOfBoundsException("row index " + i + " must be between 0 and " + (n - 1));
 	}
+	
+	/**
+	 * Below is a series of helper methods used by our open() method.
+	 * They check various grid slots surrounding the slot to be opened 
+	 * to see if they are also open, in which case they are connected 
+	 * to the newly opened slot via union find.
+	 * 
+	 * @param row
+	 * @param col
+	 */
+	private void checkSlotAbove(int row, int col) {
+		if (isOpen(row - 1, col) == true) {
+			uF.union(converts2dTo1d(row, col), converts2dTo1d(row - 1, col));
+		}
+	}
+	
+	private void checkSlotLeft(int row, int col) {
+		if (isOpen(row, col - 1) == true) {
+			uF.union(converts2dTo1d(row, col), converts2dTo1d(row, col - 1));
+		}
+	}
+	
+	private void checkSlotRight(int row, int col) {
+		if (isOpen(row, col + 1) == true) {
+			uF.union(converts2dTo1d(row, col), converts2dTo1d(row, col + 1));
+		}
+	}
+	
+	private void checkSlotBelow(int row, int col) {
+		if (isOpen(row + 1, col) == true) {
+			uF.union(converts2dTo1d(row, col), converts2dTo1d(row + 1, col));
+		}
+	}
+	
+	// END HELPER METHODS
 	
 	public static void main(String[] args) {
 		Percolation temp = new Percolation(3);
