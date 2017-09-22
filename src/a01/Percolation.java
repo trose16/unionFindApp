@@ -7,6 +7,7 @@ public class Percolation {
 	private boolean[][] grid;
 	private int n;
 	private WeightedQuickUnionUF uF;
+	private WeightedQuickUnionUF secretUF;
 	private int topVirtualSite;
 	private int bottomVirtualSite;
 	private int uFSize;
@@ -17,15 +18,19 @@ public class Percolation {
 		if (n <= 0)
 			throw new java.lang.IllegalArgumentException();
 		this.n = n;
-		uFSize = n * n - 1;
+		uFSize = n * n - 1; // starts at zero index
 		topVirtualSite = n * n;
 		bottomVirtualSite = n * n + 1;
-		uF = new WeightedQuickUnionUF(n * n + 2);
+		uF = new WeightedQuickUnionUF(n * n + 2); // has top and bottom virtual sites to calculate percolation
+		secretUF = new WeightedQuickUnionUF(n * n + 1); // only has top virtual site to eliminate back wash
 
+		// connects the top virtual site to the top row
 		for (int i = 0; i < n; i++) {
 			uF.union(topVirtualSite, i);
+			secretUF.union(topVirtualSite, i);
 		}
 
+		// connects the bottom virtual site to the bottom row
 		for (int i = 0; i < n; i++) {
 			uF.union(bottomVirtualSite, uFSize - i);
 		}
@@ -112,9 +117,10 @@ public class Percolation {
 	 * @return
 	 */
 
-	public boolean isFull(int row, int col) {
+	public boolean isFull(int row, int col) { // need to change this method to fix backwash
 		inputValidation(row, col);
-		return isOpen(row, col) == true && uF.connected(topVirtualSite, converts2dTo1d(row, col));
+//		return isOpen(row, col) == true && this.secretUF.connected(0, converts2dTo1d(row, col));
+		return isOpen(row, col) == true && secretUF.connected(0, converts2dTo1d(row, col));
 	}
 
 	/**
@@ -181,24 +187,28 @@ public class Percolation {
 	private void checkSlotAbove(int row, int col) {
 		if (isOpen(row - 1, col) == true) {
 			uF.union(converts2dTo1d(row, col), converts2dTo1d(row - 1, col));
+			secretUF.union(converts2dTo1d(row, col), converts2dTo1d(row - 1, col));
 		}
 	}
 	
 	private void checkSlotLeft(int row, int col) {
 		if (isOpen(row, col - 1) == true) {
 			uF.union(converts2dTo1d(row, col), converts2dTo1d(row, col - 1));
+			secretUF.union(converts2dTo1d(row, col), converts2dTo1d(row, col - 1));
 		}
 	}
 	
 	private void checkSlotRight(int row, int col) {
 		if (isOpen(row, col + 1) == true) {
 			uF.union(converts2dTo1d(row, col), converts2dTo1d(row, col + 1));
+			secretUF.union(converts2dTo1d(row, col), converts2dTo1d(row, col + 1));
 		}
 	}
 	
 	private void checkSlotBelow(int row, int col) {
 		if (isOpen(row + 1, col) == true) {
 			uF.union(converts2dTo1d(row, col), converts2dTo1d(row + 1, col));
+			secretUF.union(converts2dTo1d(row, col), converts2dTo1d(row + 1, col));
 		}
 	}
 	
@@ -216,8 +226,22 @@ public class Percolation {
 		System.out.println(temp.isOpen(0, 0));
 		System.out.println(temp.isFull(0, 0));
 		System.out.println(temp.percolates());
-		// System.out.println(temp.uF.connected(temp.bottomVirtualSite, 0));
-		// System.out.println(temp.uF.connected(0, 3));
+		
+		System.out.println("check union on uf " + temp.uF.connected(0, 0));
+		System.out.println("check union on uf " + temp.uF.connected(1, 1));
+		System.out.println("check union on uf " + temp.uF.connected(1, 2));
+		
+		System.out.println();
+		System.out.println("check union on secretUf " + temp.secretUF.connected(0, 0));
+		System.out.println("check union on secretUf " + temp.secretUF.connected(1, 1));
+		System.out.println("check union on secretUf " + temp.secretUF.connected(1, 2));
+		
+		for(int i = 0; i < temp.grid.length; i++){
+			for(int j = 0; j < temp.grid.length; j++){
+				System.out.println("grid" + temp.grid[i][j] + temp.grid.length);
+			}	
+		}
+
 
 	}
 
