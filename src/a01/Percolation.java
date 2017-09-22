@@ -22,15 +22,15 @@ public class Percolation {
 		topVirtualSite = n * n;
 		bottomVirtualSite = n * n + 1;
 		uF = new WeightedQuickUnionUF(n * n + 2); // has top and bottom virtual sites to calculate percolation
-		secretUF = new WeightedQuickUnionUF(n * n + 1); // only has top virtual site to eliminate back wash
+		secretUF = new WeightedQuickUnionUF(n * n + 1); // only has top virtual site to eliminate backwash
 
-		// connects the top virtual site to the top row
+		// connects the top virtual sites to the top row
 		for (int i = 0; i < n; i++) {
 			uF.union(topVirtualSite, i);
 			secretUF.union(topVirtualSite, i);
 		}
 
-		// connects the bottom virtual site to the bottom row
+		// connects the bottom virtual site on uF to the bottom row
 		for (int i = 0; i < n; i++) {
 			uF.union(bottomVirtualSite, uFSize - i);
 		}
@@ -116,10 +116,9 @@ public class Percolation {
 	 * @param col
 	 * @return
 	 */
-
-	public boolean isFull(int row, int col) { // need to change this method to fix backwash
+	
+	public boolean isFull(int row, int col) { // this is the method that determines backwash
 		inputValidation(row, col);
-//		return isOpen(row, col) == true && this.secretUF.connected(0, converts2dTo1d(row, col));
 		return isOpen(row, col) == true && secretUF.connected(0, converts2dTo1d(row, col));
 	}
 
