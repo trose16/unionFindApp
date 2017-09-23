@@ -79,7 +79,6 @@ public class Percolation {
 			checkSlotRight(row, col);
 			checkSlotAbove(row, col);
 		}
-
 		// Top right corner (row 0/col n) ! to check right or top slots
 		else if (row == 0 && col == n - 1) {
 			checkSlotLeft(row, col);
@@ -89,8 +88,7 @@ public class Percolation {
 		else if (row == n - 1 && col == n - 1) {
 			checkSlotLeft(row, col);
 			checkSlotAbove(row, col);
-		}
-		
+		}		
 		// Left border (col 0) ! left slots
 		else if (col == 0) {
 			checkSlotAbove(row, col);
@@ -129,7 +127,6 @@ public class Percolation {
 	 * A slot is full if it's both open and connected to the top. 
 	 * This method determines backwash, so we will utilize our secretUF
 	 * which initializes an array without bottom virtual site. 
-	 * 
 	 * @param row
 	 * @param col
 	 * @return
@@ -141,7 +138,6 @@ public class Percolation {
 
 	/**
 	 * makes a row,col open by making the grid array at position row,col true
-	 * 
 	 * @param row
 	 * @param col
 	 * @return
@@ -155,7 +151,6 @@ public class Percolation {
 	/**
 	 * Percolates checks to see if uF object with top and bottom virtual sites
 	 * are connected, which means the system percolates.
-	 * 
 	 * @return
 	 */
 	public boolean percolates() {
@@ -229,39 +224,55 @@ public class Percolation {
 	
 	public static void main(String[] args) {
 		Percolation temp = new Percolation(3);
+		int size = temp.grid.length;
+		
+		System.out.println("Initialized a  " + size + "-by-" + size + " grid");
+		System.out.println("Does system percolate? " + temp.percolates() + "\n");
+		
+		System.out.println("Checking value of all grid slots... ");
+		for(int i = 0; i < temp.grid.length; i++){
+			for(int j = 0; j < temp.grid.length; j++){
+				System.out.println(
+						"row: " + i + " column: " + j + " " 
+						+ temp.grid[i][j]
+						);
+			}	
+		}
+		
+		System.out.println("\nNow opening all sites from top to bottom in column 0 ");
 
 		temp.open(0, 0);
 		temp.open(1, 0);
-		temp.open(1, 1);
-		temp.open(1, 2);
-		temp.open(2, 2);
+		temp.open(2, 0); // System should now percolate
+		
+		System.out.println("Did site (0, 0) open? " + temp.isOpen(0, 0));
+		System.out.println("Is site (0, 0) full? " + temp.isFull(0, 0));
+		
+		System.out.println("\nCheck union in grid uF " + temp.uF.connected(0, 0));
+		System.out.println("Check union in grid secretUf " + temp.secretUF.connected(0, 0));
+		
+		System.out.println("\nDoes system now percolate? " + temp.percolates());
 
-		System.out.println(temp.isOpen(0, 0));
-		System.out.println(temp.isFull(0, 0));
-		System.out.println(temp.percolates());
+		System.out.println("\nTesting a site that has NOT been opened... ");
+		System.out.println("Is site (1, 1) open? " + temp.isOpen(1, 1));
+		System.out.println("Is site (1, 1) full? " + temp.isFull(1, 1));
 		
-		System.out.println("check union on uf " + temp.uF.connected(0, 0));
-		System.out.println("check union on uf " + temp.uF.connected(1, 1));
-		System.out.println("check union on uf " + temp.uF.connected(1, 2));
-		
-		System.out.println();
-		System.out.println("check union on secretUf " + temp.secretUF.connected(0, 0));
-		System.out.println("check union on secretUf " + temp.secretUF.connected(1, 1));
-		System.out.println("check union on secretUf " + temp.secretUF.connected(1, 2));
-		
+		System.out.println("\nOpening site (2, 2) bottom right corner to test backwash... ");
+		temp.open(2, 2); // This site should not be full if backwash solution worked
+		System.out.println("Is site (2, 2) open? " + temp.isOpen(2, 2));
+		System.out.println("Is site (2, 2) full? " + temp.isFull(2, 2));
+
+		System.out.println("\nChecking value of all grid slots... ");
 		for(int i = 0; i < temp.grid.length; i++){
 			for(int j = 0; j < temp.grid.length; j++){
-				System.out.println("grid" + temp.grid[i][j] + temp.grid.length);
+				System.out.println(
+						"row: " + i + " column: " + j + " " 
+						+ temp.grid[i][j]
+						);
 			}	
 		}
 
 
-	}
-
-	
-	// REMOVE BEFORE SUBMISSION: USED BY THE VISUALIZER FOR TESTING 
-	public String numberOfOpenSites() {
-		return numOfOpenSpaces + "";
 	}
 
 }
