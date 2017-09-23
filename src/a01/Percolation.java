@@ -28,7 +28,6 @@ public class Percolation {
 	private int topVirtualSite;
 	private int bottomVirtualSite;
 	private int uFSize;
-	private int numOfOpenSpaces = 0;
 	
 	public Percolation(int n) {
 
