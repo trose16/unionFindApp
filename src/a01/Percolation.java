@@ -2,6 +2,22 @@ package a01;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
+/**
+ * 
+ * @author Jordan Ainlsie and Teako Warfield-Graham
+ *  Percolation: Given a porous landscape with water on the surface 
+ *  (or oil below), under what conditions will the water be able to 
+ *  drain through to the bottom (or the oil to gush through to the 
+ *  surface)?
+ *  
+ *  We model a percolation system using an N­ x N grid of sites. Each 
+ *  site is either open or blocked. A full site is an open site that 
+ *  can be connected to an open site in the top row via a chain of 
+ *  neighboring (left, right, up, down) open sites. We say the system 
+ *  percolates if there is a full site in the bottom row.
+ *
+ */
+
 public class Percolation {
 	
 	private boolean[][] grid;
@@ -18,25 +34,24 @@ public class Percolation {
 		if (n <= 0)
 			throw new java.lang.IllegalArgumentException();
 		this.n = n;
-		uFSize = n * n - 1; // starts at zero index
+		uFSize = n * n - 1; // Must -1 as an array starts at zero index
 		topVirtualSite = n * n;
 		bottomVirtualSite = n * n + 1;
-		uF = new WeightedQuickUnionUF(n * n + 2); // has top and bottom virtual sites to calculate percolation
-		secretUF = new WeightedQuickUnionUF(n * n + 1); // only has top virtual site to eliminate backwash
+		uF = new WeightedQuickUnionUF(n * n + 2); // Has top and bottom virtual sites to calculate percolation
+		secretUF = new WeightedQuickUnionUF(n * n + 1); // Only top virtual site to eliminate backwash
 
-		// connects the top virtual sites to the top row
+		// Connects the top virtual sites to the top row
 		for (int i = 0; i < n; i++) {
 			uF.union(topVirtualSite, i);
 			secretUF.union(topVirtualSite, i);
 		}
 
-		// connects the bottom virtual site on uF to the bottom row
+		// Connects the bottom virtual site on uF to the bottom row
 		for (int i = 0; i < n; i++) {
 			uF.union(bottomVirtualSite, uFSize - i);
 		}
 
-		// Initializing 2d array grid all slots are false, which means they are
-		// not open.
+		// Initializing 2d array grid all slots are false, which means they are blocked.
 		grid = new boolean[n][n];
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid.length; j++) {
@@ -109,15 +124,16 @@ public class Percolation {
 	}
 	
 	/**
-	 * checks to see if a row,col is full it needs to be open and connected to
-	 * the top for it to be full
+	 * Checks to see if a slot in the grid is full. 
+	 * A slot is full if it's both open and connected to the top. 
+	 * This method determines backwash, so we will utilize our secretUF
+	 * which initializes an array without bottom virtual site. 
 	 * 
 	 * @param row
 	 * @param col
 	 * @return
 	 */
-	
-	public boolean isFull(int row, int col) { // this is the method that determines backwash
+	public boolean isFull(int row, int col) { 
 		inputValidation(row, col);
 		return isOpen(row, col) == true && secretUF.connected(0, converts2dTo1d(row, col));
 	}
@@ -136,8 +152,8 @@ public class Percolation {
 
 
 	/**
-	 * percolates will tell you if the top connects to the bottom so it can
-	 * percolate
+	 * Percolates checks to see if uF object with top and bottom virtual sites
+	 * are connected, which means the system percolates.
 	 * 
 	 * @return
 	 */
