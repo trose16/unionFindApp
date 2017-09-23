@@ -2,23 +2,6 @@ package a01;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-/**
- * 
- * @author Jordan Ainlsie and Teako Warfield-Graham
- * 
- *  Percolation: Given a porous landscape with water on the surface 
- *  (or oil below), under what conditions will the water be able to 
- *  drain through to the bottom (or the oil to gush through to the 
- *  surface)?
- *  
- *  We model a percolation system using an N­ x N grid of sites. Each 
- *  site is either open or blocked. A full site is an open site that 
- *  can be connected to an open site in the top row via a chain of 
- *  neighboring (left, right, up, down) open sites. We say the system 
- *  percolates if there is a full site in the bottom row.
- *
- */
-
 public class Percolation {
 	
 	private boolean[][] grid;
@@ -28,7 +11,6 @@ public class Percolation {
 	private int topVirtualSite;
 	private int bottomVirtualSite;
 	private int uFSize;
-	
 	public Percolation(int n) {
 
 		if (n <= 0)
@@ -63,7 +45,6 @@ public class Percolation {
 	public void open(int row, int col) {
 		inputValidation(row, col);
 		if (!isOpen(row, col) == true) {
-			numOfOpenSpaces++;
 		}
 		grid[row][col] = true;
 	
@@ -126,9 +107,6 @@ public class Percolation {
 	 * A slot is full if it's both open and connected to the top. 
 	 * This method determines backwash, so we will utilize our secretUF
 	 * which initializes an array without bottom virtual site. 
-	 * @param row
-	 * @param col
-	 * @return
 	 */
 	public boolean isFull(int row, int col) { 
 		inputValidation(row, col);
@@ -136,10 +114,7 @@ public class Percolation {
 	}
 
 	/**
-	 * makes a row,col open by making the grid array at position row,col true
-	 * @param row
-	 * @param col
-	 * @return
+	 * Makes a row,col open by making the grid array at position row,col true
 	 */
 	public boolean isOpen(int row, int col) {
 		inputValidation(row, col);
@@ -148,9 +123,7 @@ public class Percolation {
 
 
 	/**
-	 * Percolates checks to see if uF object with top and bottom virtual sites
-	 * are connected, which means the system percolates.
-	 * @return
+	 * Checks if top and bottom virtual sites are connected, which means the system percolates.
 	 */
 	public boolean percolates() {
 		return uF.connected(topVirtualSite, bottomVirtualSite);
@@ -163,9 +136,6 @@ public class Percolation {
 	 * converts2DTo1D() takes a row and col from percolation grid (2D Array) 
 	 * and converts it into the corresponding single index reference used by 
 	 * WeightedQuickUnionUF, which unions grid data in a single 1D array.
-	 * @param row
-	 * @param col
-	 * @return
 	 */
 	private int converts2dTo1d(int row, int col) {
 		return row * n + col;
@@ -174,9 +144,6 @@ public class Percolation {
 	/**
 	 * Each percolation method should throw an exception for invalid indices, 
 	 * inputValidation() method performs our validation process.
-	 * @param row
-	 * @param col
-	 * @return
 	 */
 	private void inputValidation(int i, int j) {
 		if (i < 0 || i >= n || j < 0 || j >= n)
@@ -188,8 +155,6 @@ public class Percolation {
 	 * They check various grid slots surrounding the slot to be opened 
 	 * to see if they are also open, in which case they are connected 
 	 * to the newly opened slot via union find.
-	 * @param row
-	 * @param col
 	 */
 	private void checkSlotAbove(int row, int col) {
 		if (isOpen(row - 1, col) == true) {

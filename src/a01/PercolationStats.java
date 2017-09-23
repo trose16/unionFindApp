@@ -3,19 +3,6 @@ package a01;
 import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.StdRandom;
 
-/**
- * 
- * @author Jordan Ainlsie and Teako Warfield-Graham
- * 
- * PercolationStats uses the Percolation class to perform 
- * a series of computational experiments that estimates the 
- * percolation threshold. It takes input of an N x N grid and 
- * an integer representing how many tests to run. API has methods 
- * to calculate the mean, std dev, Low/High confidence intervals 
- * then prints them out to the console.
- * 
- */
-
 public class PercolationStats {
 	private double[] thresholds;
 	private Percolation percolation;
@@ -23,8 +10,6 @@ public class PercolationStats {
 
 	/**
 	 * Performs T independent experiments on an N­ x ­N grid
-	 * @param N (N-by-N grid)
-	 * @param T (number of tests to run)
 	 */
 	public PercolationStats(int N, int T) {
 
@@ -51,7 +36,6 @@ public class PercolationStats {
 
 	/**
 	 * Sample mean of percolation threshold
-	 * @return
 	 */
 	public double mean() {
 		return StdStats.mean(thresholds);
@@ -59,7 +43,6 @@ public class PercolationStats {
 
 	/**
 	 * Sample standard deviation of percolation threshold
-	 * @return
 	 */
 	public double stddev() {
 		return StdStats.stddev(thresholds);
@@ -67,7 +50,6 @@ public class PercolationStats {
 
 	/**
 	 * Low endpoint of 95% confidence interval
-	 * @return
 	 */
 	public double confidenceLow() {
 		return mean() - ((1.96 * stddev()) / Math.sqrt(thresholds.length));
@@ -75,7 +57,6 @@ public class PercolationStats {
 
 	/** 
 	 * High endpoint of 95% confidence interval
-	 * @return
 	 */
 	public double confidenceHigh() {
 		return mean() + ((1.96 * stddev()) / Math.sqrt(thresholds.length));
