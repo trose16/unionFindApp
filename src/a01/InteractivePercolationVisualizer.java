@@ -1,6 +1,9 @@
 package a01;
 
 /******************************************************************************
+ *  NOTE: This client has been provided by ©Princeton University for the 
+ *  purpose of testing/visualizing/debugging our Percolation implementation.
+ *  
  *  Compilation:  javac InteractivePercolationVisualizer.java
  *  Execution:    java InteractivePercolationVisualizer n
  *  Dependencies: PercolationVisualizer.java Percolation.java

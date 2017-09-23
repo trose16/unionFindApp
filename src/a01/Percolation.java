@@ -5,6 +5,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 /**
  * 
  * @author Jordan Ainlsie and Teako Warfield-Graham
+ * 
  *  Percolation: Given a porous landscape with water on the surface 
  *  (or oil below), under what conditions will the water be able to 
  *  drain through to the bottom (or the oil to gush through to the 
@@ -168,7 +169,6 @@ public class Percolation {
 	 * converts2DTo1D() takes a row and col from percolation grid (2D Array) 
 	 * and converts it into the corresponding single index reference used by 
 	 * WeightedQuickUnionUF, which unions grid data in a single 1D array.
-	 * 
 	 * @param row
 	 * @param col
 	 * @return
@@ -180,7 +180,6 @@ public class Percolation {
 	/**
 	 * Each percolation method should throw an exception for invalid indices, 
 	 * inputValidation() method performs our validation process.
-	 * 
 	 * @param row
 	 * @param col
 	 * @return
@@ -195,7 +194,6 @@ public class Percolation {
 	 * They check various grid slots surrounding the slot to be opened 
 	 * to see if they are also open, in which case they are connected 
 	 * to the newly opened slot via union find.
-	 * 
 	 * @param row
 	 * @param col
 	 */

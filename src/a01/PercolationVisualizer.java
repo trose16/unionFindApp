@@ -1,5 +1,11 @@
 package a01;
 
+/**
+ * NOTE: This client has been provided by ©Princeton University for the 
+ * purpose of testing/visualizing/debugging our Percolation implementation.
+ * 
+ */
+
 import java.awt.Font;
 
 import edu.princeton.cs.algs4.In;

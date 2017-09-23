@@ -9,9 +9,9 @@ import edu.princeton.cs.algs4.StdRandom;
  * 
  * PercolationStats uses the Percolation class to perform 
  * a series of computational experiments that estimates the 
- * percolation threshold. It takes an N x N grid and an integer 
- * representing how many tests to run. API has methods to find 
- * the mean, std dev, confidence Low and confidence High intervals 
+ * percolation threshold. It takes input of an N x N grid and 
+ * an integer representing how many tests to run. API has methods 
+ * to calculate the mean, std dev, Low/High confidence intervals 
  * then prints them out to the console.
  * 
  */
@@ -51,7 +51,6 @@ public class PercolationStats {
 
 	/**
 	 * Sample mean of percolation threshold
-	 * 
 	 * @return
 	 */
 	public double mean() {
@@ -60,7 +59,6 @@ public class PercolationStats {
 
 	/**
 	 * Sample standard deviation of percolation threshold
-	 * 
 	 * @return
 	 */
 	public double stddev() {
